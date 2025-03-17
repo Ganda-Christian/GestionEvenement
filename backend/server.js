@@ -12,7 +12,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Connexion à MongoDB
-mongoose.connect('mongodb://localhost:27017/mon-projet', {
+mongoose.connect('mongodb://localhost:27017/event-management-db', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => console.log('Connecté à MongoDB !'))

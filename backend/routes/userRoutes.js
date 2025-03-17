@@ -2,6 +2,26 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 
+
+// Route de connexion
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+      const user = await User.findOne({ email });
+      if (user) {
+          return res.status(200).json({ 
+              message: `Bienvenue, ${user.name}!`, 
+              role: user.role 
+          });
+      } else {
+          return res.status(401).json({ error: "Email ou mot de passe incorrect." });
+      }
+  } catch (err) {
+      return res.status(500).json({ error: "Erreur serveur." });
+  }
+});
+
 // Endpoint pour ajouter un utilisateur
 router.post('/users', async (req, res) => {
   try {
