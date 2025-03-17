@@ -2,6 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, Container, Row, Col, Table } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+toast.success("Utilisateur ajouté avec succès !");
+toast.error("Échec de l'ajout de l'utilisateur !");
 
 const API_URL = "http://localhost:5000/users";
 
@@ -14,9 +20,15 @@ const AddUserForm = () => {
   }, []);
 
   const fetchUsers = async () => {
-    const response = await fetch(API_URL);
-    const data = await response.json();
-    setUsers(data);
+    try {
+        const response = await fetch(API_URL);
+        if (!response.ok) throw new Error("Erreur lors de la récupération des utilisateurs");
+        const data = await response.json();
+        setUsers(data);
+    } catch (error) {
+        console.error(error.message);
+        alert("Impossible de récupérer les utilisateurs !");
+    }
   };
 
   const handleChange = (e) => {

@@ -8,7 +8,7 @@ app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ email, password });
       if (user) {
           return res.status(200).json({ 
               message: `Bienvenue, ${user.name}!`, 

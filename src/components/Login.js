@@ -8,29 +8,31 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
   
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const response = await axios('http://localhost:3000/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email }),
-        });
+        const response = await axios.post('http://localhost:3000/login', { email, password });
 
-        const data = await response.json();
-        if (response.ok) {
+        // Vérification de la réponse
+        if (response.status === 200) {
+            const data = response.data;
             setMessage(`Bienvenue, ${data.message} avec le rôle : ${data.role}`);
+            
+            // Redirection vers la page d'accueil
+            navigate('/home'); // Assurez-vous que '/home' correspond à votre route d'accueil dans React Router
         } else {
-            setMessage(data.error);
+            setMessage('Erreur : Informations de connexion incorrectes.');
         }
     } catch (error) {
+        // Gestion des erreurs serveur
         setMessage("Erreur de connexion au serveur.");
+        console.error(error);
     }
   };
+
 
   return (
     <div className="container d-flex align-items-center justify-content-center min-vh-100 bg-light">
