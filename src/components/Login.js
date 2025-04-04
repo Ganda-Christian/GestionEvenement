@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import '../styles/Login.css'; // Importez un fichier CSS pour styliser la page
+import '../styles/Login.css'; // Importation du fichier CSS pour styliser la page
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const Login = () => {
@@ -13,23 +13,35 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
     try {
-        const response = await axios.post('http://localhost:3000/login', { email, password });
+      // Envoi de la requête avec fetch
+      const response = await fetch('http://localhost:5000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })  //Conversion des données en JSON
+      });
 
-        // Vérification de la réponse
-        if (response.status === 200) {
-            const data = response.data;
-            setMessage(`Bienvenue, ${data.message} avec le rôle : ${data.role}`);
-            
-            // Redirection vers la page d'accueil
-            navigate('/home'); // Assurez-vous que '/home' correspond à votre route d'accueil dans React Router
-        } else {
-            setMessage('Erreur : Informations de connexion incorrectes.');
-        }
+      const data = await response.json(); // Conversion de la réponse JSON
+  
+      if (response.ok) {
+
+        // Stocker le token dans le stockage local
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('role', data.role);
+        // Si le statut HTTP est 200, on récupère les données
+        setMessage(`Bienvenue, ${data.message} avec le rôle : ${data.role}`);
+        
+        // Redirection vers le dashboard
+        navigate('/dashboard'); // Assurez-vous que '/dashboard' est défini dans React Router
+      } else {
+        // En cas d'erreur (exemple : 400 ou 401)
+        setMessage('Erreur : Informations de connexion incorrectes.');
+      }
     } catch (error) {
-        // Gestion des erreurs serveur
-        setMessage("Erreur de connexion au serveur.");
-        console.error(error);
+      // Gestion des erreurs réseau ou serveur
+      setMessage("Erreur de connexion au serveur.");
+      console.error(error);
     }
   };
 
@@ -66,7 +78,7 @@ const Login = () => {
               <button type="submit" className="btn btn-primary w-100">Se connecter</button>
           </form>
           <div className="text-center mt-3">
-              <a href="#" className="text-decoration-none">Mot de passe oublié ?</a>
+  
           </div>
           {message && <div className="alert alert-info mt-3">{message}</div>}
       </div>

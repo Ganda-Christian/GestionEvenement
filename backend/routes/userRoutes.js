@@ -1,27 +1,40 @@
 const express = require('express');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const User = require('../models/User');
 
 
-// Route de connexion
-app.post('/login', async (req, res) => {
+/* Route de connexion
+router.post('/login', async (req, res) => {
+  console.log('Requête reçue avec les données :', req.body);
   const { email, password } = req.body;
 
   try {
-      const user = await User.findOne({ email, password });
-      if (user) {
-          return res.status(200).json({ 
-              message: `Bienvenue, ${user.name}!`, 
-              role: user.role 
-          });
-      } else {
-          return res.status(401).json({ error: "Email ou mot de passe incorrect." });
+      const user = await User.findOne({ email });
+
+      if (!user) {
+          return res.status(400).json({ message: "Utilisateur non trouvé" });
       }
-  } catch (err) {
-      return res.status(500).json({ error: "Erreur serveur." });
+
+      // Comparer le mot de passe fourni avec celui stocké (haché)
+      const isMatch = await bcrypt.compare(password, user.password);
+
+      if (!isMatch) {
+          return res.status(401).json({ message: "Mot de passe incorrect" });
+      }
+
+      // Authentification réussie, on peut ajouter un token ici si nécessaire (JWT)
+      
+      const token = jwt.sign({ id: user._id, role: user.role }, 'SECRET_KEY', { expiresIn: '7d' });
+      //renvoie du token au client
+      res.json({ message: 'Connexion réussie', token, role: user.role });
+
+  } catch (error) {
+      res.status(500).json({ message: "Erreur serveur" });
   }
 });
-
+*/
 // Endpoint pour ajouter un utilisateur
 router.post('/users', async (req, res) => {
   try {

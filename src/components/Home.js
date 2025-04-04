@@ -1,96 +1,84 @@
 import React from "react";
-import { Table, Button, Container, Row, Col, Card, Navbar, Nav } from "react-bootstrap";
-import { FaTrash, FaArrowLeft, FaSignOutAlt } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
+import { Table, Button, Container, Row, Col, Card, Navbar, Nav, NavDropdown } from "react-bootstrap";
+import { FaTrash, FaArrowLeft, FaSignOutAlt, FaHome, FaUsers, FaCalendarAlt } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Flag from "react-world-flags";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFlag, faFlagUsa, faGlobe } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
+
 
 const Home = () => {
-  const events = [
-    { id: 1, name: "Seminar", startDate: "2023-02-04", endDate: "2024-12-07", organizer: "Modern" },
-    { id: 2, name: "Seminar", startDate: "2023-01-02", endDate: "2023-02-05", organizer: "Modern" }
-  ];
 
-  return (
-    <div className="d-flex min-vh-100">
-      {/* Sidebar */}
-      <div className="bg-primary text-white p-4 d-flex flex-column justify-content-between" style={{ width: "250px", position: "fixed", left: 0, bottom: 0, top: 0 }}>
+    const { t, i18n } = useTranslation();
+
+    const changeLanguage = (lng) => {
+        i18n.changeLanguage(lng);
+    };
+
+
+    return(
         <div>
-          <h5>EVENT'O WEB APP</h5>
-          <hr/>
-          <ul className="list-unstyled mt-4">
-            <li className="py-2">Hello amar</li>
-            <li className="py-2">Home</li>
-            <li className="py-2">Add New Event</li>
-            <li className="py-2">Messages</li>
-            <li className="py-2">Change Password</li>
-          </ul>
-        </div>
-      </div>
+            <h3 className="">Bienvenue à la page d'accueil de gestion des événements!</h3>
+            {/* Header */}
+            <header className="">
+                <nav>
+                    <ul className="nav">
+                        <li className="">Nos événements</li>
+                        <li className="nav-item"><a href="login" className="">{t("Se connecter")}</a></li>
+                        <li></li>
+                    </ul>
+                </nav>
+            </header>
 
-      {/* Main Content */}
-      <div className="flex-grow-1" style={{ marginLeft: "250px" }}>
-        {/* Navbar */}
-        <ul className="nav">
-            <li className=""></li>
-            <li className="nav-item"><a href="/" className="nav-link text-dark">Déconnexion</a></li>
-          </ul>
-        <Navbar bg="light" expand="lg" className="mb-3 d-flex justify-content-between" style={{ marginLeft: "250px", width: "calc(100% - 250px)" }}>
-          <Nav>
-            <Nav.Link href="#" className="text-dark">
-              <FaArrowLeft /> Back
-            </Nav.Link>
-          </Nav>
-          <Nav>
-            <Nav.Link href="#" className="text-dark">
-              <FaSignOutAlt /> Logout
-            </Nav.Link>
-          </Nav>
+            <section className="">
+          <h1>{t("welcome")}</h1>
+          <Navbar bg="" expand="lg">
+                      
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+            <Nav>
+                <NavDropdown
+                title={
+                    <span>
+                    <FontAwesomeIcon icon={faGlobe} /> {t("language")}
+                    </span>
+                }
+                id="language-dropdown"
+                align="end"
+                >
+                <NavDropdown.Item onClick={() => changeLanguage("en")}>
+                    <button className="btn btn-light text-primary fw-bold" onClick={() => changeLanguage("en")}>
+                    <Flag code="GB" style={{ width: 20, height: 15 }} />
+                    </button>
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={() => changeLanguage("fr")}>
+                    <button className="btn btn-light text-primary fw-bold" onClick={() => changeLanguage("fr")}>
+                    <Flag code="FR" style={{ width: 20, height: 15 }} />
+                    </button>
+                    
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={() => changeLanguage("es")}>
+                    <button className="btn btn-light text-primary fw-bold" onClick={() => changeLanguage("es")}>
+                    <Flag code="ES" style={{ width: 20, height: 15 }} />
+                    </button>
+                    
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={() => changeLanguage("it")}>
+                    <button className="btn btn-light text-primary fw-bold" onClick={() => changeLanguage("it")}>
+                    <Flag code="IT" style={{ width: 20, height: 15 }} />
+                    </button>
+                    
+                </NavDropdown.Item>
+                </NavDropdown>
+            </Nav>
+            </Navbar.Collapse>
         </Navbar>
-        
-        <Container className="p-4">
-          <Card>
-            <Card.Body>
-              <Row className="mb-3 align-items-center">
-                <Col>
-                  <h4>Pending Approvals <span className="badge bg-primary">2</span></h4>
-                </Col>
-              </Row>
-              <p className="text-muted">Hey amar! View details about your events that are still not approved by the Administrator.</p>
-              
-              {/* Table */}
-              <Table striped bordered hover className="mt-3">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Event Name</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Organizer Name</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {events.map((event, index) => (
-                    <tr key={event.id}>
-                      <td>{index + 1}</td>
-                      <td>{event.name}</td>
-                      <td>{event.startDate}</td>
-                      <td>{event.endDate}</td>
-                      <td>{event.organizer}</td>
-                      <td>
-                        <Button variant="danger" className="p-2">
-                          <FaTrash />
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </Card.Body>
-          </Card>
-        </Container>
-      </div>
-    </div>
-  );
+        </section>
+
+        </div>
+    );
 };
 
 export default Home;
