@@ -11,8 +11,6 @@ const userSchema = new mongoose.Schema({
     default: 'participant',
     required: true,
   },
-}, {
-  timestamps: true, // ajoute automatiquement createdAt et updatedAt
 });
 
 // 🔐 Middleware pour hasher le mot de passe avant la sauvegarde

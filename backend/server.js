@@ -12,8 +12,7 @@ const bcrypt = require('bcrypt');
 
 const app = express();
 const PORT = 5000;
-const SECRET_KEY = process.env.JWT_SECRET || "beatchristgandachristiannanga";
-
+const SECRET_KEY = process.env.SECRET_KEY || "beatchristgandachristiannanga";
 
 // Middleware
 app.use(cors());
@@ -49,6 +48,7 @@ app.post('/login', async (req, res) => {
 });
 
 // Route de base "/"
+
 app.get('/', (req, res) => {
   res.send('Bienvenue sur mon API !');
 });

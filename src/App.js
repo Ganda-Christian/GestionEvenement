@@ -9,6 +9,7 @@ import AddEditDeleteEvent from './components/addEditDeleteEvent';
 import Home from './components/Home';
 import Ticket from './components/Ticket';
 import PrivateRoute from './components/privateRoute';
+import Register from './components/register';
 
 
 
@@ -24,6 +25,7 @@ function App() {
         <Route path="/addUserForm" element={<AddUserForm/>}/>
         <Route path="/addEditDeleteEvent" element={<AddEditDeleteEvent/>}/>
         <Route path="/ticket" element={<Ticket/>}/>
+        <Route path="/register" element={<Register />} />
       </Routes>
     </Router>
   );
